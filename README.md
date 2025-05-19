@@ -1,14 +1,12 @@
 # 📊 DataAnalytics-Assessment
-
-This repository contains SQL-based data analytics tasks focused on customer segmentation and behavior analysis.
-
+This repository contains SQL queries and data insights based on a financial dataset. The focus is on customer behavior, product engagement, transaction patterns, and lifetime value analysis.
 ---
 
 ## 🔧 Setup Instructions
 
 1. **Download and Extract Dataset**
    - Download the zip file from the provided Google Drive link.
-   - Import the extracted `.sql` file into **MySQL Workbench** or any MySQL-compatible tool.
+   - Import the extracted `.sql` file into **MySQL Workbench** .
 
 2. **Database Structure**
    The database contains the following tables:
@@ -62,7 +60,7 @@ Calculate the average number of transactions per customer per month and categori
 **Tables Used:**
 - `users_customuser`
 - `savings_savingsaccount`
-- (Assumed: `savings_transaction` table)
+
 
 **Approach:**
 - Join the necessary tables on `owner_id`.
@@ -72,5 +70,38 @@ Calculate the average number of transactions per customer per month and categori
 
 ---
 
-## 📁 Project Structure
+### ✅ Question 3: Account Inactivity Alert
+
+**Scenario:**  
+Operations wants to flag **active accounts** (savings or investments) that had **no deposit transactions in the last 365 days**.
+
+**Task:**  
+Find accounts where the **last inflow (deposit) transaction** was over one year ago.
+
+**Tables Used:**  
+- `plans_plan`  
+- `savings_savingsaccount`
+  **Approach**
+  -Joins the `savings_savingsaccount` table with the `savings_transaction`.
+  -Uses `MAX()` to get the **last transaction date** for each account.
+  -Calculates the **number of days** since the last transaction using `DATEDIFF()`.
+  -Filters the result using `HAVING` to only show:
+   - Accounts with the **last transaction more than 1 year ago**.
+
+  ### ✅ Question 4:  Customer Lifetime Value (CLV) Estimation.
+  **Scenario:**  
+Marketing wants to estimate the **CLV** of each customer using a simplified model.
+
+**Task:**  
+For each customer, compute:
+- Account tenure (in months since `date_joined`)
+- Total number of transactions
+- Estimated CLV using the formula: For each customer, assuming the profit_per_transaction is 0.1% of the transaction value
+  
+**Approach:**  
+- Join users and accounts.
+- Calculate tenure using `TIMESTAMPDIFF`.
+- Use `COUNT` for transactions and multiply by profit rate.
+- Apply the CLV formula and order by descending value.
+
 
